@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { getRandomNum } from './util';
+import Header from './Header';
+import Boards from './Boards';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+	const [myHistory, setMyHistory] = useState([]);
+	const [otherHistory, setOtherHistory] = useState([]);
+
+	const gameManager = {
+		handleRollGame: () => {
+			setMyHistory([...myHistory, getRandomNum(6)]);
+			setOtherHistory([...otherHistory, getRandomNum(6)]);
+		},
+		handleClearGame: () => {
+			setMyHistory([]);
+			setOtherHistory([]);
+		},
+	};
+
+	return (
+		<div className='App'>
+			<Header gameManager={gameManager} />
+			<Boards className='App-boards' gameHistory={{ myHistory, otherHistory }} />
+		</div>
+	);
 }
-
-export default App;
